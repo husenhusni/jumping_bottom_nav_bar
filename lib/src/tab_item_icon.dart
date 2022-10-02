@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class TabItemIcon {
   final Color startColor;
   final Color endColor;
-  final IconData iconData;
+  final IconData? iconData;
   final Color curveColor;
-  final Widget Function(BuildContext context, Animation<Color> color)
+  final Widget Function(BuildContext context, Animation<Color?>? color)?
       buildWidget;
 
   TabItemIcon({

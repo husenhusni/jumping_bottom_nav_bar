@@ -7,17 +7,17 @@ import './tab_item_icon.dart';
 /// Must be wrapped with Default Tab controller or provide a tab controller
 ///
 class JumpingTabBar extends StatefulWidget {
-  final void Function(int index) onChangeTab;
+  final void Function(int index)? onChangeTab;
   final int selectedIndex;
-  final TabController controller;
+  final TabController? controller;
   final Duration duration;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   final List<TabItemIcon> items;
 
   final Gradient circleGradient;
   JumpingTabBar({
-    Key key,
+    Key? key,
     this.backgroundColor,
     this.duration = const Duration(milliseconds: 700),
     this.circleGradient = const LinearGradient(
@@ -29,7 +29,7 @@ class JumpingTabBar extends StatefulWidget {
       end: Alignment.topRight,
     ),
     this.selectedIndex = 1,
-    @required this.items,
+    required this.items,
     this.controller,
     this.onChangeTab,
   }) : super(key: key);
@@ -40,12 +40,12 @@ class JumpingTabBar extends StatefulWidget {
 
 class _JumpingTabBarState extends State<JumpingTabBar>
     with SingleTickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
   int selectedIndex = 1;
-  double itemWidth;
-  Animation<double> posAnim;
-  Animation<double> paintAnim;
-  TabController tabController;
+  double? itemWidth;
+  late Animation<double> posAnim;
+  late Animation<double> paintAnim;
+  TabController? tabController;
 
   var pivotPoints = List.filled(4, Offset(0, 0));
 
@@ -59,7 +59,7 @@ class _JumpingTabBarState extends State<JumpingTabBar>
     if (_newController != tabController) {
       tabController?.removeListener(onTabCtrlChange);
       tabController = _newController;
-      tabController.addListener(onTabCtrlChange);
+      tabController!.addListener(onTabCtrlChange);
     }
     Future.delayed(Duration(seconds: 1), () {
       onChangeTab(widget.selectedIndex, shouldCallParent: false);
@@ -67,13 +67,13 @@ class _JumpingTabBarState extends State<JumpingTabBar>
   }
 
   void onTabCtrlChange() {
-    if (tabController.index + 1 != selectedIndex)
-      onChangeTab(tabController.index + 1, shouldCallParent: false);
+    if (tabController!.index + 1 != selectedIndex)
+      onChangeTab(tabController!.index + 1, shouldCallParent: false);
   }
 
   @override
   void dispose() {
-    tabController.dispose();
+    tabController!.dispose();
     super.dispose();
   }
 
@@ -110,12 +110,12 @@ class _JumpingTabBarState extends State<JumpingTabBar>
     setState(() {
       selectedIndex = index;
     });
-    if (tabController != null) tabController.index = index - 1;
+    if (tabController != null) tabController!.index = index - 1;
     if (widget.onChangeTab != null && shouldCallParent)
-      widget.onChangeTab(index);
+      widget.onChangeTab!(index);
 
-    double cPoint = (itemWidth - circleSize) / 2;
-    var nextPx = (index - 1) * itemWidth + cPoint;
+    double cPoint = (itemWidth! - circleSize) / 2;
+    var nextPx = (index - 1) * itemWidth! + cPoint;
     double nextPy = -15;
     double pivotx = pivotPoints[3].dx;
     double pivoty = -100;
@@ -147,7 +147,6 @@ class _JumpingTabBarState extends State<JumpingTabBar>
   @override
   Widget build(BuildContext context) {
     return Stack(
-      overflow: Overflow.visible,
       children: [
         Container(
           height: 75,

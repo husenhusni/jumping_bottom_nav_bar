@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import './tab_item_icon.dart';
 
 class TabItem extends StatefulWidget {
-  final TabItemIcon tabItemIcon;
+  final TabItemIcon? tabItemIcon;
   final bool isSelected;
   final int index;
   final Duration duration;
 
   final void Function(int index) onTabChange;
   TabItem({
-    @required this.duration,
+    required this.duration,
     this.tabItemIcon,
-    @required this.onTabChange,
-    @required this.index,
-    @required this.isSelected,
+    required this.onTabChange,
+    required this.index,
+    required this.isSelected,
   }) : super(key: Key(index.toString()));
   @override
   TabItemState createState() => TabItemState();
 }
 
 class TabItemState extends State<TabItem> with SingleTickerProviderStateMixin {
-  Animation<Color> colorAnim;
-  Animation<Offset> transAnim;
-  AnimationController animationController;
+  Animation<Color?>? colorAnim;
+  late Animation<Offset> transAnim;
+  late AnimationController animationController;
   final Duration subDuration = const Duration(milliseconds: 200);
 
   @override
@@ -58,8 +58,8 @@ class TabItemState extends State<TabItem> with SingleTickerProviderStateMixin {
       end: Offset(0, -28),
     ).animate(animationController);
     colorAnim = ColorTween(
-      begin: widget.tabItemIcon.startColor ?? Colors.black,
-      end: widget.tabItemIcon.endColor ?? Colors.white,
+      begin: widget.tabItemIcon!.startColor ?? Colors.black,
+      end: widget.tabItemIcon!.endColor ?? Colors.white,
     ).animate(animationController);
     if (widget.isSelected) animationController.forward();
   }
@@ -75,12 +75,12 @@ class TabItemState extends State<TabItem> with SingleTickerProviderStateMixin {
             alignment: Alignment.center,
             child: Transform.translate(
               offset: transAnim.value,
-              child: widget.tabItemIcon.buildWidget != null
-                  ? widget.tabItemIcon.buildWidget(context, colorAnim)
+              child: widget.tabItemIcon!.buildWidget != null
+                  ? widget.tabItemIcon!.buildWidget!(context, colorAnim)
                   : Icon(
-                      widget.tabItemIcon.iconData,
+                      widget.tabItemIcon!.iconData,
                       size: 30,
-                      color: colorAnim.value,
+                      color: colorAnim!.value,
                     ),
             ),
           ),

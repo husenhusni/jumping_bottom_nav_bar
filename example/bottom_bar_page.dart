@@ -53,7 +53,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
           items: [
             TabItemIcon(
               buildWidget: (_, color) => Container(
-                color: color.value,
+                color: color?.value,
                 child: Text("1"),
               ),
               startColor: Colors.red,
